@@ -50,6 +50,12 @@ const resetHabbit = (id: number) => {
         >
           Today completed {{ completedCount }} out of {{ habits.length }}
         </p>
+        <p v-else-if="completedCount > 0" class="text-base font-semibold text-gray-700">
+          Today completed all habits
+        </p>
+        <p v-else class="text-base font-semibold text-gray-700">
+          No habits today
+        </p>
       </div>
 
       <div class="flex flex-col gap-2">
