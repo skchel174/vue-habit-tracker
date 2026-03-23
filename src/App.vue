@@ -44,7 +44,10 @@ const resetHabbit = (id: number) => {
 
     <main class="container mx-auto px-4 sm:px-6">
       <div class="py-4">
-        <p class="text-base font-semibold text-gray-700">
+        <p
+          v-if="completedCount < habits.length"
+          class="text-base font-semibold text-gray-700"
+        >
           Today completed {{ completedCount }} out of {{ habits.length }}
         </p>
       </div>
@@ -56,7 +59,10 @@ const resetHabbit = (id: number) => {
           class="p-4 flex items-center gap-4 bg-white border border-gray-200 shadow-2xs rounded-md"
         >
           <div class="flex-1">
-            <h3 class="font-semibold text-gray-800">
+            <h3
+              class="font-semibold text-gray-800"
+              :class="[habit.doneToday ? 'line-through' : 'no-underline']"
+            >
               {{ habit.title }}
             </h3>
             <p class="mt-1 text-xs font-medium uppercase text-gray-500">
