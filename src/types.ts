@@ -3,3 +3,7 @@ export interface Habit {
   title: string;
   doneToday: boolean;
 }
+
+export interface HabitForm {
+  title: string;
+}

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, reactive, toRefs } from 'vue';
 import HabitItem from '@/components/HabitItem.vue';
-import type { Habit } from '@/types';
+import HabitForm from '@/components/HabitForm.vue';
+import type { Habit, HabitForm as HabitFormInterface } from '@/types';
 
 const habits = ref<Habit[]>([
   { id: 1, title: 'Drink water', doneToday: false },
@@ -30,6 +31,26 @@ const toggleHabit = (id: number) => {
   }
   habit.doneToday = !habit.doneToday;
 };
+
+const habitForm = reactive<HabitFormInterface>({
+  title: '',
+});
+
+const addHabit = () => {
+  const habitTitle = habitForm.title.trim();
+
+  if (!habitTitle) {
+    return;
+  }
+
+  habits.value.push({
+    id: Date.now(),
+    title: habitTitle,
+    doneToday: false,
+  });
+
+  habitForm.title = '';
+};
 </script>
 
 <template>
@@ -40,7 +61,13 @@ const toggleHabit = (id: number) => {
       </div>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6">
+    <main class="container mx-auto px-2 sm:px-6 py-4">
+      <div
+        class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
+      >
+        <HabitForm :form="habitForm" @submit="addHabit" />        
+      </div>
+
       <div class="py-4">
         <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
       </div>

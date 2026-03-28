@@ -14,7 +14,7 @@ const toggleHabit = (id: number) => {
 
 <template>
   <div
-    class="p-4 flex items-center gap-4 bg-white border border-gray-200 shadow-2xs rounded-md"
+    class="p-4 flex items-center gap-4 bg-white border border-gray-200 shadow-2xs rounded-lg"
   >
     <div class="flex-1">
       <h3
@@ -33,7 +33,7 @@ const toggleHabit = (id: number) => {
       :class="
         habit.doneToday
           ? 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300'
-          : 'bg-pink-200 text-pink-900 hover:bg-pink-300'
+          : 'bg-rose-200 text-rose-900 hover:bg-rose-300'
       "
       @click="toggleHabit(habit.id)"
     >
