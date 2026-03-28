@@ -1,27 +1,41 @@
 <script setup lang="ts">
-import { ref, computed, reactive, toRefs } from 'vue';
+import { ref, computed, reactive, watch } from 'vue';
 import HabitItem from '@/components/HabitItem.vue';
 import HabitForm from '@/components/HabitForm.vue';
 import type { Habit, HabitForm as HabitFormInterface } from '@/types';
 
-const habits = ref<Habit[]>([
+const defaultHabit = [
   { id: 1, title: 'Drink water', doneToday: false },
   { id: 2, title: 'Read 20 minutes', doneToday: true },
   { id: 3, title: 'Stretching', doneToday: false },
-]);
+];
+
+const habitsCache = localStorage.getItem('habits');
+
+const habits = ref<Habit[]>(
+  habitsCache ? JSON.parse(habitsCache) : defaultHabit,
+);
+
+const totalCount = computed(() => {
+  return habits.value.length;
+});
 
 const completedCount = computed(() => {
   return habits.value.filter((habit) => habit.doneToday).length;
 });
 
+const progressText = computed(() => {
+  return `${completedCount.value} / ${totalCount.value}`;
+});
+
 const statusText = computed(() => {
-  if (habits.value.length === 0) {
+  if (totalCount.value === 0) {
     return 'No habits today';
   }
-  if (completedCount.value === habits.value.length) {
+  if (completedCount.value === totalCount.value) {
     return 'All habits completed';
   }
-  return `Today completed ${completedCount.value} out of ${habits.value.length}`;
+  return `Today completed: ${progressText.value}`;
 });
 
 const toggleHabit = (id: number) => {
@@ -51,6 +65,14 @@ const addHabit = () => {
 
   habitForm.title = '';
 };
+
+watch(
+  habits,
+  (newValue) => {
+    localStorage.setItem('habits', JSON.stringify(newValue));
+  },
+  { deep: true },
+);
 </script>
 
 <template>
@@ -65,7 +87,7 @@ const addHabit = () => {
       <div
         class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
       >
-        <HabitForm :form="habitForm" @submit="addHabit" />        
+        <HabitForm :form="habitForm" @submit="addHabit" />
       </div>
 
       <div class="py-4">
