@@ -1,7 +1,7 @@
 {
-  "name": "routine-tracker",
+  "name": "vue-habit-tracker",
   "version": "0.1.0",
-  "description": "Routine tracker built with Vue 3 + TypeScript",
+  "description": "Simple habit tracker built with Vue 3 + TypeScript",
   "private": true,
   "type": "module",
   "scripts": {
