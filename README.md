@@ -1,3 +1,3 @@
-# Routine-Tracker
+# Vue Habit Tracker
 
-This project is a routine tracker built with Vue 3 and TypeScript.
+This project is a habit tracker built with Vue 3 and TypeScript.
