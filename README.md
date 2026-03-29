@@ -1,3 +1,13 @@
 # Vue Habit Tracker
 
-This project is a habit tracker built with Vue 3 and TypeScript.
+Simple habit tracker built with Vue 3 + TypeScript.
+
+## Stack
+- Vue 3
+- TypeScript
+- Vite
+
+## Installation
+```bash
+npm install
+npm run dev
