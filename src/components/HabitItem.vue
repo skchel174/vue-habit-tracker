@@ -1,43 +1,74 @@
 <script setup lang="ts">
 import type { Habit } from '@/types';
+import { usePopover } from '@/composables/usePopover';
 
 const props = defineProps<{ habit: Habit }>();
 
 const emit = defineEmits<{
   (e: 'toggle', id: number): void;
+  (e: 'delete', id: number): void;
 }>();
+
+const { triggerRef, menuRef, isOpen, toggle, close } = usePopover();
 
 const toggleHabit = (id: number) => {
   emit('toggle', id);
-}
+  close();
+};
+
+const deleteHabit = (id: number) => {
+  emit('delete', id);
+  close();
+};
 </script>
 
 <template>
   <div
-    class="p-4 flex items-center gap-4 bg-white border border-gray-200 shadow-2xs rounded-lg"
+    ref="triggerRef"
+    class="px-4 py-2 bg-white border border-gray-200 shadow-2xs rounded-lg"
+    @click="toggle"
   >
-    <div class="flex-1">
-      <h3
-        class="font-semibold text-gray-800"
+    <div class="flex-1 cursor-pointer">
+      <h5
+        class="text-md font-medium text-gray-700"
         :class="[habit.doneToday ? 'line-through' : 'no-underline']"
       >
         {{ habit.title }}
-      </h3>
-      <p class="mt-1 text-xs font-medium uppercase text-gray-500">
-        {{ habit.doneToday ? 'Done' : 'Not done' }}
-      </p>
+      </h5>
     </div>
-    <button
-      type="button"
-      class="py-2 px-4 text-sm font-medium rounded-md border border-transparent disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
-      :class="
-        habit.doneToday
-          ? 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300'
-          : 'bg-rose-200 text-rose-900 hover:bg-rose-300'
-      "
-      @click="toggleHabit(habit.id)"
-    >
-      {{ habit.doneToday ? 'Undo' : 'Complete' }}
-    </button>
+
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition ease-out duration-100"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition ease-in duration-75"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <div
+          v-if="isOpen"
+          ref="menuRef"
+          aria-orientation="vertical"
+          class="fixed z-50 min-w-40 origin-top-left overflow-hidden rounded-md border border-gray-200/70 bg-white py-1 shadow-lg"
+        >
+          <button
+            type="button"
+            class="flex w-full cursor-pointer items-center px-4 py-2.5 text-left text-sm transition-colors duration-150 ease-out hover:bg-rose-50 active:bg-rose-100/50 focus-visible:bg-rose-50 focus-visible:outline-none"
+            :class="habit.doneToday ? 'text-gray-700' : 'text-green-700'"
+            @click="toggleHabit(habit.id)"
+          >
+            {{ habit.doneToday ? 'Undo' : 'Complete' }}
+          </button>
+          <button
+            type="button"
+            class="flex w-full cursor-pointer items-center px-4 py-2.5 text-left text-sm text-red-700 transition-colors duration-150 ease-out hover:bg-rose-50 active:bg-rose-100/50 focus-visible:bg-rose-50 focus-visible:outline-none"
+            @click="deleteHabit(habit.id)"
+          >
+            Delete habit
+          </button>
+        </div>
+      </transition>
+    </Teleport>
   </div>
 </template>

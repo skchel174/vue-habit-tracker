@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, reactive, watch } from 'vue';
-import HabitItem from '@/components/HabitItem.vue';
 import HabitForm from '@/components/HabitForm.vue';
+import HabitItem from '@/components/HabitItem.vue';
 import type { Habit, HabitForm as HabitFormInterface } from '@/types';
+import { computed, reactive, ref, watch } from 'vue';
 
 const defaultHabit = [
   { id: 1, title: 'Drink water', doneToday: false },
@@ -38,14 +38,6 @@ const statusText = computed(() => {
   return `Today completed: ${progressText.value}`;
 });
 
-const toggleHabit = (id: number) => {
-  const habit = habits.value.find((h) => h.id === id);
-  if (!habit) {
-    return;
-  }
-  habit.doneToday = !habit.doneToday;
-};
-
 const habitForm = reactive<HabitFormInterface>({
   title: '',
 });
@@ -64,6 +56,18 @@ const addHabit = () => {
   });
 
   habitForm.title = '';
+};
+
+const toggleHabit = (id: number) => {
+  const habit = habits.value.find((habit) => habit.id === id);
+  if (!habit) {
+    return;
+  }
+  habit.doneToday = !habit.doneToday;
+};
+
+const deleteHabit = (id: number) => {
+  habits.value = habits.value.filter((habit) => habit.id !== id);
 };
 
 watch(
@@ -94,11 +98,12 @@ watch(
         <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
       </div>
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
         <HabitItem
           v-for="habit in habits"
           :key="habit.id"
           :habit="habit"
+          @delete="deleteHabit"
           @toggle="toggleHabit"
         />
       </div>
