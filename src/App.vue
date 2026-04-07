@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import HabitForm from '@/components/HabitForm.vue';
 import HabitItem from '@/components/HabitItem.vue';
-import type { Habit, HabitForm as HabitFormInterface } from '@/types';
-import { computed, reactive, ref, watch } from 'vue';
+import type { Habit } from '@/types';
+import { computed, ref, watch } from 'vue';
 
 const defaultHabit = [
   { id: 1, title: 'Drink water', doneToday: false },
@@ -38,24 +38,12 @@ const statusText = computed(() => {
   return `Today completed: ${progressText.value}`;
 });
 
-const habitForm = reactive<HabitFormInterface>({
-  title: '',
-});
-
-const addHabit = () => {
-  const habitTitle = habitForm.title.trim();
-
-  if (!habitTitle) {
-    return;
-  }
-
+const addHabit = (data: { title: string }) => {
   habits.value.push({
     id: Date.now(),
-    title: habitTitle,
+    title: data.title,
     doneToday: false,
   });
-
-  habitForm.title = '';
 };
 
 const toggleHabit = (id: number) => {
@@ -91,7 +79,7 @@ watch(
       <div
         class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
       >
-        <HabitForm :form="habitForm" @submit="addHabit" />
+        <HabitForm @submit="addHabit" />
       </div>
 
       <div class="py-4">

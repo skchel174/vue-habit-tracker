@@ -1,16 +1,24 @@
 <script setup lang="ts">
 import type { HabitForm } from '@/types';
+import { reactive } from 'vue';
 
-defineProps<{
-  form: HabitForm;
-}>();
+const form = reactive<HabitForm>({
+  title: '',
+});
 
 const emit = defineEmits<{
-  (e: 'submit'): void;
+  (e: 'submit', data: HabitForm): void;
 }>();
 
 const handleSubmit = () => {
-  emit('submit');
+  const title = form.title.trim();
+  
+  if (!title) {
+    return;
+  }
+
+  emit('submit', { title });
+  form.title = '';
 };
 </script>
 
