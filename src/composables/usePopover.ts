@@ -20,6 +20,10 @@ export function usePopover({
     isOpen.value = !isOpen.value;
   };
 
+  const open = () => {
+    isOpen.value = true;
+  };
+
   const close = () => {
     isOpen.value = false;
   };

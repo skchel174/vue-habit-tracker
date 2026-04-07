@@ -10,6 +10,8 @@ const emit = defineEmits<{
 }>();
 
 const { triggerRef, menuRef, isOpen, toggle, close } = usePopover();
+void triggerRef;
+void menuRef;
 
 const toggleHabit = (id: number) => {
   emit('toggle', id);
