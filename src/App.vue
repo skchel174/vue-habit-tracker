@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, reactive, watch } from 'vue';
-import HabitItem from '@/components/HabitItem.vue';
 import HabitForm from '@/components/HabitForm.vue';
-import type { Habit, HabitForm as HabitFormInterface } from '@/types';
+import HabitItem from '@/components/HabitItem.vue';
+import type { Habit } from '@/types';
+import { computed, ref, watch } from 'vue';
 
 const defaultHabit = [
   { id: 1, title: 'Drink water', doneToday: false },
@@ -38,32 +38,24 @@ const statusText = computed(() => {
   return `Today completed: ${progressText.value}`;
 });
 
+const addHabit = (data: { title: string }) => {
+  habits.value.push({
+    id: Date.now(),
+    title: data.title,
+    doneToday: false,
+  });
+};
+
 const toggleHabit = (id: number) => {
-  const habit = habits.value.find((h) => h.id === id);
+  const habit = habits.value.find((habit) => habit.id === id);
   if (!habit) {
     return;
   }
   habit.doneToday = !habit.doneToday;
 };
 
-const habitForm = reactive<HabitFormInterface>({
-  title: '',
-});
-
-const addHabit = () => {
-  const habitTitle = habitForm.title.trim();
-
-  if (!habitTitle) {
-    return;
-  }
-
-  habits.value.push({
-    id: Date.now(),
-    title: habitTitle,
-    doneToday: false,
-  });
-
-  habitForm.title = '';
+const deleteHabit = (id: number) => {
+  habits.value = habits.value.filter((habit) => habit.id !== id);
 };
 
 watch(
@@ -87,18 +79,19 @@ watch(
       <div
         class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
       >
-        <HabitForm :form="habitForm" @submit="addHabit" />
+        <HabitForm @submit="addHabit" />
       </div>
 
       <div class="py-4">
         <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
       </div>
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
         <HabitItem
           v-for="habit in habits"
           :key="habit.id"
           :habit="habit"
+          @delete="deleteHabit"
           @toggle="toggleHabit"
         />
       </div>
