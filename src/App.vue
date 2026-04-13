@@ -76,11 +76,7 @@ watch(
     </header>
 
     <main class="container mx-auto px-2 sm:px-6 py-4">
-      <div
-        class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
-      >
-        <HabitForm @submit="addHabit" />
-      </div>
+      <HabitForm @submit="addHabit" />
 
       <div class="py-4">
         <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
