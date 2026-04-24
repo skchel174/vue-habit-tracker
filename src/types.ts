@@ -13,7 +13,7 @@ export type HabitColor =
   | 'amber'
   | 'slate';
 
-export type HabitKind = 'one-time' | 'check' | 'duration' | 'countable';
+export type HabitKind = 'check' | 'duration' | 'countable';
 
 export type Frequency = 'none' | 'daily' | 'weekly' | 'monthly';
 
