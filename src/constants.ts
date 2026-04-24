@@ -1,0 +1,34 @@
+import type { Frequency, HabitColor, HabitKind } from './types';
+
+export const weekDays = [
+  { value: 1, short: 'Mon', label: 'Monday' },
+  { value: 2, short: 'Tue', label: 'Tuesday' },
+  { value: 3, short: 'Wed', label: 'Wednesday' },
+  { value: 4, short: 'Thu', label: 'Thursday' },
+  { value: 5, short: 'Fri', label: 'Friday' },
+  { value: 6, short: 'Sat', label: 'Saturday' },
+  { value: 7, short: 'Sun', label: 'Sunday' },
+];
+
+export const indicatorColors = [
+  { value: 'rose', label: 'Rose', dotClass: 'bg-rose-400' },
+  { value: 'pink', label: 'Pink', dotClass: 'bg-pink-400' },
+  { value: 'violet', label: 'Violet', dotClass: 'bg-violet-400' },
+  { value: 'blue', label: 'Blue', dotClass: 'bg-sky-400' },
+  { value: 'emerald', label: 'Emerald', dotClass: 'bg-emerald-400' },
+  { value: 'amber', label: 'Amber', dotClass: 'bg-amber-400' },
+  { value: 'slate', label: 'Slate', dotClass: 'bg-slate-400' },
+] satisfies Array<{ value: HabitColor; label: string; dotClass: string }>;
+
+export const habitKindOptions = [
+  { value: 'check', label: 'Check-based' },
+  { value: 'duration', label: 'Duration-based' },
+  { value: 'countable', label: 'Count-based' },
+] satisfies Array<{ value: HabitKind; label: string }>;
+
+export const frequencyOptions = [
+  { value: 'none', label: 'Does not repeat' },
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'monthly', label: 'Monthly' },
+] satisfies Array<{ value: Frequency; label: string }>;

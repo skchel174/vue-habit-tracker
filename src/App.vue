@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HabitForm from '@/components/HabitForm.vue';
+import HabitFormContainer from '@/components/habit-form/HabitFormContainer.vue';
 import HabitItem from '@/components/HabitItem.vue';
 import type { Habit } from '@/types';
 import { computed, ref, watch } from 'vue';
@@ -76,11 +76,7 @@ watch(
     </header>
 
     <main class="container mx-auto px-2 sm:px-6 py-4">
-      <div
-        class="py-3 px-4 bg-white border border-gray-200 shadow-2xs rounded-lg flex flex-col gap-4"
-      >
-        <HabitForm @submit="addHabit" />
-      </div>
+      <HabitFormContainer @submit="addHabit" />
 
       <div class="py-4">
         <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
