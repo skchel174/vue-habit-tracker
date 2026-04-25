@@ -1,6 +1,9 @@
+import { habitFormSchema } from '@/composables/habitFormSchema';
 import { Frequency, HabitColor, HabitKind } from '@/constants';
 import type { HabitForm } from '@/types';
-import { reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
+
+type HabitFormErrors = Partial<Record<keyof HabitForm, string | null>>;
 
 export function useHabitForm() {
   const form = reactive<HabitForm>({
@@ -20,6 +23,36 @@ export function useHabitForm() {
     indicatorColor: HabitColor.Rose,
     isArchived: false,
   });
+
+  const errors = reactive<HabitFormErrors>({});
+
+  const hasErrors = computed(() => Object.values(errors).some(Boolean));
+
+  const clearErrors = () => {
+    for (const key of Object.keys(errors) as Array<keyof HabitForm>) {
+      errors[key] = null;
+    }
+  }
+
+  const validate = () => {
+    clearErrors();
+
+    const result = habitFormSchema.safeParse(form);
+  
+    if (result.success) {
+      return true;
+    }
+  
+    for (const issue of result.error.issues) {
+      const field = issue.path[0] as keyof HabitFormErrors;
+  
+      if (!errors[field]) {
+        errors[field] = issue.message;
+      }
+    }
+  
+    return false;
+  };
 
   watch(
     () => form.frequency,
@@ -74,5 +107,11 @@ export function useHabitForm() {
     { immediate: true },
   );
 
-  return { form };
+  return {
+    form,
+    errors,
+    hasErrors,
+    validate,
+    clearErrors,
+  };
 }
