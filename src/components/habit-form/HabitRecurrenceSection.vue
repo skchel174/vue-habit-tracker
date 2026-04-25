@@ -39,15 +39,16 @@ const frequencyUnitLabel = computed(() => {
   }
 });
 
-const handleToggleWeekDay = (day: number) => {
-  if (selectedDaysOfWeek.value.includes(day)) {
+const handleToggleWeekDay = (day: string | number) => {
+  const dayNumber = Number(day);
+  if (selectedDaysOfWeek.value.includes(dayNumber)) {
     selectedDaysOfWeek.value = selectedDaysOfWeek.value.filter(
-      (item) => item !== day,
+      (item) => item !== dayNumber,
     );
     return;
   }
 
-  selectedDaysOfWeek.value = [...selectedDaysOfWeek.value, day].sort(
+  selectedDaysOfWeek.value = [...selectedDaysOfWeek.value, dayNumber].sort(
     (a, b) => a - b,
   );
 };
@@ -62,16 +63,14 @@ const handleToggleWeekDay = (day: number) => {
 
   <div v-if="frequency !== 'none'" class="lg:col-span-4 space-y-1.5">
     <UiFieldLabel for="interval">Repeat every</UiFieldLabel>
-
     <div class="flex gap-2">
       <UiInput
         id="interval"
-        v-model="interval"
+        v-model.number="interval"
         type="number"
         min="1"
         max="365"
       />
-
       <div
         class="inline-flex min-w-[72px] items-center justify-center rounded-xl border border-rose-200 bg-rose-50/80 px-3 text-sm font-medium text-slate-600"
       >
@@ -83,7 +82,6 @@ const handleToggleWeekDay = (day: number) => {
 
   <div v-if="frequency === 'weekly'" class="lg:col-span-12 space-y-1.5">
     <UiFieldLabel for="daysOfWeek">Days of week</UiFieldLabel>
-
     <div class="flex flex-wrap gap-2">
       <button
         v-for="day in weekDays"
@@ -107,7 +105,7 @@ const handleToggleWeekDay = (day: number) => {
     <UiFieldLabel for="dayOfMonth">Day of month</UiFieldLabel>
     <UiInput
       id="dayOfMonth"
-      v-model="dayOfMonth"
+      v-model.number="dayOfMonth"
       type="number"
       min="1"
       max="31"

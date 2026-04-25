@@ -46,7 +46,7 @@ const startDateLabel = computed(() => {
     <UiFieldLabel for="repeatLimit">Repeat limit</UiFieldLabel>
     <UiInput
       id="repeatLimit"
-      v-model="repeatLimit"
+      v-model.number="repeatLimit"
       type="number"
       min="1"
       placeholder="e.g. 10 times"
