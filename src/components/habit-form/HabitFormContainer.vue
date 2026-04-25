@@ -18,13 +18,22 @@ import {
   indicatorColors,
   weekDays,
 } from '@/constants';
+import { nextTick } from 'vue';
 
 const { form, errors, validate, reset } = useHabitForm();
 
 const { recurrencePreview } = useRecurrencePreview(form, weekDays);
 
-const submitForm = () => {
-  validate();
+const submitForm = async () => {
+  const isValid = validate();
+
+  if (!isValid) {
+    await nextTick();
+    const firstErrorElement = document.querySelector('[data-error="true"]');
+    firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  
   console.log('submit', form);
 };
 </script>
@@ -96,9 +105,7 @@ const submitForm = () => {
       v-model:indicatorColor="form.indicatorColor"
     />
 
-    <HabitStatusSection
-      v-model:isArchived="form.isArchived"
-    />
+    <HabitStatusSection v-model:isArchived="form.isArchived" />
 
     <template #actions>
       <UiButton variant="secondary" @click="reset">Cancel</UiButton>

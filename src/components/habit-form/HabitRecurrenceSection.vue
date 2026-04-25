@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import UiFieldLabel from '@/components/UiFieldLabel.vue';
-import UiFieldMessage from '@/components/UiFieldMessage.vue';
+import UiFormField from '@/components/UiFormField.vue';
 import UiInput from '@/components/UiInput.vue';
 import UiSelect from '@/components/UiSelect.vue';
 import { Frequency } from '@/constants';
@@ -56,62 +55,74 @@ const handleToggleWeekDay = (day: string | number) => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiFieldLabel for="frequency">Frequency</UiFieldLabel>
-    <UiSelect id="frequency" v-model="frequency" :options="frequencyOptions" />
-    <UiFieldMessage :message="errors.frequency" variant="error" />
+    <UiFormField for="frequency" label="Frequency" :error="errors.frequency">
+      <UiSelect
+        id="frequency"
+        v-model="frequency"
+        :options="frequencyOptions"
+      />
+    </UiFormField>
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-4 space-y-1.5">
-    <UiFieldLabel for="interval">Repeat every</UiFieldLabel>
-    <div class="flex gap-2">
-      <UiInput
-        id="interval"
-        v-model.number="interval"
-        type="number"
-        min="1"
-        max="365"
-      />
-      <div
-        class="inline-flex min-w-[72px] items-center justify-center rounded-xl border border-rose-200 bg-rose-50/80 px-3 text-sm font-medium text-slate-600"
-      >
-        {{ frequencyUnitLabel }}
+    <UiFormField for="interval" label="Repeat every" :error="errors.interval">
+      <div class="flex gap-2">
+        <UiInput
+          id="interval"
+          v-model.number="interval"
+          type="number"
+          min="1"
+          max="365"
+        />
+        <div
+          class="inline-flex min-w-[72px] items-center justify-center rounded-xl border border-rose-200 bg-rose-50/80 px-3 text-sm font-medium text-slate-600"
+        >
+          {{ frequencyUnitLabel }}
+        </div>
       </div>
-    </div>
-    <UiFieldMessage :message="errors.interval" variant="error" />
+    </UiFormField>
   </div>
 
   <div v-if="frequency === 'weekly'" class="lg:col-span-12 space-y-1.5">
-    <UiFieldLabel for="daysOfWeek">Days of week</UiFieldLabel>
-    <div class="flex flex-wrap gap-2">
-      <button
-        v-for="day in weekDays"
-        :key="day.value"
-        type="button"
-        class="rounded-xl border px-3 py-2 text-sm font-medium transition"
-        :class="
-          selectedDaysOfWeek.includes(day.value)
-            ? 'border-rose-300 bg-rose-100 text-slate-700 shadow-sm'
-            : 'border-rose-200 bg-white text-slate-500 hover:border-rose-300 hover:bg-rose-50'
-        "
-        @click="handleToggleWeekDay(day.value)"
-      >
-        {{ day.short }}
-      </button>
-    </div>
-    <UiFieldMessage :message="errors.daysOfWeek" variant="error" />
+    <UiFormField
+      for="daysOfWeek"
+      label="Days of week"
+      :error="errors.daysOfWeek"
+    >
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="day in weekDays"
+          :key="day.value"
+          type="button"
+          class="rounded-xl border px-3 py-2 text-sm font-medium transition"
+          :class="
+            selectedDaysOfWeek.includes(day.value)
+              ? 'border-rose-300 bg-rose-100 text-slate-700 shadow-sm'
+              : 'border-rose-200 bg-white text-slate-500 hover:border-rose-300 hover:bg-rose-50'
+          "
+          @click="handleToggleWeekDay(day.value)"
+        >
+          {{ day.short }}
+        </button>
+      </div>
+    </UiFormField>
   </div>
 
   <div v-if="frequency === 'monthly'" class="lg:col-span-4 space-y-1.5">
-    <UiFieldLabel for="dayOfMonth">Day of month</UiFieldLabel>
-    <UiInput
-      id="dayOfMonth"
-      v-model.number="dayOfMonth"
-      type="number"
-      min="1"
-      max="31"
-      placeholder="For example 15"
-    />
-    <UiFieldMessage :message="errors.dayOfMonth" variant="error" />
+    <UiFormField
+      for="dayOfMonth"
+      label="Day of month"
+      :error="errors.dayOfMonth"
+    >
+      <UiInput
+        id="dayOfMonth"
+        v-model.number="dayOfMonth"
+        type="number"
+        min="1"
+        max="31"
+        placeholder="For example 15"
+      />
+    </UiFormField>
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-12 space-y-1.5">
