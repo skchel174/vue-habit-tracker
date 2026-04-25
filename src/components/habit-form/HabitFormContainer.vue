@@ -19,7 +19,7 @@ import {
   weekDays,
 } from '@/constants';
 
-const { form, errors, validate } = useHabitForm();
+const { form, errors, validate, reset } = useHabitForm();
 
 const { recurrencePreview } = useRecurrencePreview(form, weekDays);
 
@@ -101,7 +101,7 @@ const submitForm = () => {
     />
 
     <template #actions>
-      <UiButton variant="secondary">Cancel</UiButton>
+      <UiButton variant="secondary" @click="reset">Cancel</UiButton>
       <UiButton type="submit">Save habit</UiButton>
     </template>
   </HabitFormLayout>

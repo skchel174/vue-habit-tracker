@@ -3,26 +3,36 @@ import { Frequency, HabitColor, HabitKind } from '@/constants';
 import type { HabitForm } from '@/types';
 import { computed, reactive, watch } from 'vue';
 
+const createInitialForm = (values?: Partial<HabitForm>): HabitForm => ({
+  title: '',
+  description: '',
+  habitKind: HabitKind.Check,
+  frequency: Frequency.None,
+  interval: 1,
+  daysOfWeek: [],
+  dayOfMonth: null,
+  endDate: null,
+  repeatLimit: null,
+  targetMinutes: null,
+  targetCount: null,
+  startDate: '',
+  preferredTime: '',
+  indicatorColor: HabitColor.Rose,
+  isArchived: false,
+  ...values,
+});
+
+const cloneForm = (form: HabitForm): HabitForm => ({
+  ...form,
+  daysOfWeek: [...form.daysOfWeek],
+});
+
 type HabitFormErrors = Partial<Record<keyof HabitForm, string | null>>;
 
-export function useHabitForm() {
-  const form = reactive<HabitForm>({
-    title: '',
-    description: '',
-    habitKind: HabitKind.Check,
-    frequency: Frequency.Daily,
-    interval: 1,
-    daysOfWeek: [],
-    dayOfMonth: null,
-    targetCount: null,
-    targetMinutes: null,
-    startDate: '',
-    endDate: null,
-    repeatLimit: null,
-    preferredTime: '',
-    indicatorColor: HabitColor.Rose,
-    isArchived: false,
-  });
+export function useHabitForm(initialValues?: Partial<HabitForm>) {
+  const initialForm = createInitialForm(initialValues);
+
+  const form = reactive<HabitForm>(cloneForm(initialForm));
 
   const errors = reactive<HabitFormErrors>({});
 
@@ -32,26 +42,37 @@ export function useHabitForm() {
     for (const key of Object.keys(errors) as Array<keyof HabitForm>) {
       errors[key] = null;
     }
-  }
+  };
 
   const validate = () => {
     clearErrors();
 
     const result = habitFormSchema.safeParse(form);
-  
+
     if (result.success) {
       return true;
     }
-  
+
     for (const issue of result.error.issues) {
-      const field = issue.path[0] as keyof HabitFormErrors;
-  
-      if (!errors[field]) {
-        errors[field] = issue.message;
+      const field = issue.path[0];
+
+      if (typeof field !== 'string') {
+        continue;
+      }
+
+      const key = field as keyof HabitForm;
+      
+      if (!errors[key]) {
+        errors[key] = issue.message;
       }
     }
-  
+
     return false;
+  };
+
+  const reset = () => {
+    Object.assign(form, cloneForm(initialForm));
+    clearErrors();
   };
 
   watch(
@@ -111,7 +132,8 @@ export function useHabitForm() {
     form,
     errors,
     hasErrors,
-    validate,
     clearErrors,
+    validate,
+    reset,
   };
 }
