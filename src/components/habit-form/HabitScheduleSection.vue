@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import UiFieldLabel from '@/components/UiFieldLabel.vue';
+import UiFieldMessage from '@/components/UiFieldMessage.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
+import type { FieldError } from '@/types';
 import { computed } from 'vue';
+
+type HabitScheduleErrors = {
+  startDate: FieldError;
+  endDate: FieldError;
+  repeatLimit: FieldError;
+  preferredTime: FieldError;
+};
 
 const props = defineProps<{
   isRecurring: boolean;
+  errors: HabitScheduleErrors;
 }>();
 
 const startDate = defineModel<string | null>('startDate', { default: null });
@@ -21,17 +31,19 @@ const startDateLabel = computed(() => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="startDate">{{ startDateLabel }}</UiLabel>
+    <UiFieldLabel for="startDate">{{ startDateLabel }}</UiFieldLabel>
     <UiInput id="startDate" v-model="startDate" type="date" />
+    <UiFieldMessage :message="errors.startDate" variant="error" />
   </div>
 
   <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="endDate">End date</UiLabel>
+    <UiFieldLabel for="endDate">End date</UiFieldLabel>
     <UiInput id="endDate" v-model="endDate" type="date" />
+    <UiFieldMessage :message="errors.endDate" variant="error" />
   </div>
 
   <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="repeatLimit">Repeat limit</UiLabel>
+    <UiFieldLabel for="repeatLimit">Repeat limit</UiFieldLabel>
     <UiInput
       id="repeatLimit"
       v-model="repeatLimit"
@@ -39,10 +51,12 @@ const startDateLabel = computed(() => {
       min="1"
       placeholder="e.g. 10 times"
     />
+    <UiFieldMessage :message="errors.repeatLimit" variant="error" />
   </div>
 
   <div class="lg:col-span-6 space-y-1.5">
-    <UiLabel for="preferredTime">Preferred time</UiLabel>
+    <UiFieldLabel for="preferredTime">Preferred time</UiFieldLabel>
     <UiInput id="preferredTime" v-model="preferredTime" type="time" />
+    <UiFieldMessage :message="errors.preferredTime" variant="error" />
   </div>
 </template>

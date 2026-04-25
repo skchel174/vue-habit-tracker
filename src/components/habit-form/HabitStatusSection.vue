@@ -16,7 +16,7 @@ const isArchived = defineModel<boolean>('isArchived', { required: true });
         <span class="mt-0.5 block text-sm leading-5 text-slate-500">
           Keep it in history, but hide it from active planning.
         </span>
-      </div>
+      </div>  
 
       <UiCheckbox v-model="isArchived" />
     </label>

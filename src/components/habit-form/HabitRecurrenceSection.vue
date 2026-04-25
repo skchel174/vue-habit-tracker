@@ -1,14 +1,24 @@
 <script setup lang="ts">
+import UiFieldLabel from '@/components/UiFieldLabel.vue';
+import UiFieldMessage from '@/components/UiFieldMessage.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
 import UiSelect from '@/components/UiSelect.vue';
 import { Frequency } from '@/constants';
+import type { FieldError } from '@/types';
 import { computed } from 'vue';
+
+type HabitRecurrenceErrors = {
+  frequency: FieldError;
+  interval: FieldError;
+  daysOfWeek: FieldError;
+  dayOfMonth: FieldError;
+};
 
 defineProps<{
   weekDays: { value: number; short: string; label: string }[];
   frequencyOptions: { value: Frequency; label: string }[];
   recurrencePreview: string;
+  errors: HabitRecurrenceErrors;
 }>();
 
 const frequency = defineModel<Frequency>('frequency', { required: true });
@@ -45,12 +55,13 @@ const handleToggleWeekDay = (day: number) => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="frequency">Frequency</UiLabel>
+    <UiFieldLabel for="frequency">Frequency</UiFieldLabel>
     <UiSelect id="frequency" v-model="frequency" :options="frequencyOptions" />
+    <UiFieldMessage :message="errors.frequency" variant="error" />
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="interval">Repeat every</UiLabel>
+    <UiFieldLabel for="interval">Repeat every</UiFieldLabel>
 
     <div class="flex gap-2">
       <UiInput
@@ -67,10 +78,11 @@ const handleToggleWeekDay = (day: number) => {
         {{ frequencyUnitLabel }}
       </div>
     </div>
+    <UiFieldMessage :message="errors.interval" variant="error" />
   </div>
 
   <div v-if="frequency === 'weekly'" class="lg:col-span-12 space-y-1.5">
-    <UiLabel for="daysOfWeek">Days of week</UiLabel>
+    <UiFieldLabel for="daysOfWeek">Days of week</UiFieldLabel>
 
     <div class="flex flex-wrap gap-2">
       <button
@@ -88,10 +100,11 @@ const handleToggleWeekDay = (day: number) => {
         {{ day.short }}
       </button>
     </div>
+    <UiFieldMessage :message="errors.daysOfWeek" variant="error" />
   </div>
 
   <div v-if="frequency === 'monthly'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="dayOfMonth">Day of month</UiLabel>
+    <UiFieldLabel for="dayOfMonth">Day of month</UiFieldLabel>
     <UiInput
       id="dayOfMonth"
       v-model="dayOfMonth"
@@ -100,6 +113,7 @@ const handleToggleWeekDay = (day: number) => {
       max="31"
       placeholder="For example 15"
     />
+    <UiFieldMessage :message="errors.dayOfMonth" variant="error" />
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-12 space-y-1.5">

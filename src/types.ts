@@ -1,5 +1,7 @@
 import type { Frequency, HabitColor, HabitKind } from "./constants";
 
+export type FieldError = string | null | undefined;
+
 export interface Habit {
   id: number;
   title: string;

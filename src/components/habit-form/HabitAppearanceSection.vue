@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UiLabel from '@/components/UiLabel.vue';
+import UiLabel from '@/components/UiFieldLabel.vue';
 import type { HabitColor } from '@/constants';
 
 defineProps<{
@@ -18,7 +18,6 @@ const changeIndicatorColor = (color: HabitColor) => {
 <template>
   <div class="lg:col-span-6 space-y-1.5">
     <UiLabel for="indicatorColor">Indicator color</UiLabel>
-
     <div class="flex flex-wrap gap-2">
       <button
         v-for="color in indicatorColors"
