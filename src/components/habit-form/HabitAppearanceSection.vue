@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UiLabel from '@/components/UiLabel.vue';
-import type { HabitColor } from '@/types';
+import type { HabitColor } from '@/constants';
 
 defineProps<{
   indicatorColors: { value: HabitColor; label: string; dotClass: string }[];

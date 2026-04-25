@@ -1,3 +1,4 @@
+import { Frequency, HabitColor, HabitKind } from '@/constants';
 import type { HabitForm } from '@/types';
 import { reactive, watch } from 'vue';
 
@@ -5,8 +6,8 @@ export function useHabitForm() {
   const form = reactive<HabitForm>({
     title: '',
     description: '',
-    habitKind: 'check',
-    frequency: 'daily',
+    habitKind: HabitKind.Check,
+    frequency: Frequency.Daily,
     interval: 1,
     daysOfWeek: [],
     dayOfMonth: null,
@@ -16,22 +17,22 @@ export function useHabitForm() {
     endDate: null,
     repeatLimit: null,
     preferredTime: '',
-    indicatorColor: 'rose',
+    indicatorColor: HabitColor.Rose,
     isArchived: false,
   });
 
   watch(
     () => form.frequency,
     (frequency) => {
-      if (frequency !== 'weekly') {
+      if (frequency !== Frequency.Weekly) {
         form.daysOfWeek = [];
       }
 
-      if (frequency !== 'monthly') {
+      if (frequency !== Frequency.Monthly) {
         form.dayOfMonth = null;
       }
 
-      if (frequency === 'none') {
+      if (frequency === Frequency.None) {
         form.interval = 1;
         form.daysOfWeek = [];
         form.dayOfMonth = null;
@@ -46,13 +47,13 @@ export function useHabitForm() {
   watch(
     () => form.habitKind,
     (kind) => {
-      if (kind === 'check') {
+      if (kind === HabitKind.Check) {
         form.targetCount = null;
         form.targetMinutes = null;
         return;
       }
 
-      if (kind === 'duration') {
+      if (kind === HabitKind.Duration) {
         form.targetCount = null;
 
         if (form.targetMinutes === null || form.targetMinutes < 1) {
@@ -62,7 +63,7 @@ export function useHabitForm() {
         return;
       }
 
-      if (kind === 'countable') {
+      if (kind === HabitKind.Countable) {
         form.targetMinutes = null;
 
         if (form.targetCount === null || form.targetCount < 1) {

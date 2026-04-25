@@ -2,7 +2,7 @@
 import UiInput from '@/components/UiInput.vue';
 import UiLabel from '@/components/UiLabel.vue';
 import UiSelect from '@/components/UiSelect.vue';
-import type { Frequency } from '@/types';
+import { Frequency } from '@/constants';
 import { computed } from 'vue';
 
 defineProps<{
@@ -18,11 +18,11 @@ const dayOfMonth = defineModel<number | null>('dayOfMonth', { default: null });
 
 const frequencyUnitLabel = computed(() => {
   switch (frequency.value) {
-    case 'daily':
+    case Frequency.Daily:
       return interval.value === 1 ? 'day' : 'days';
-    case 'weekly':
+    case Frequency.Weekly:
       return interval.value === 1 ? 'week' : 'weeks';
-    case 'monthly':
+    case Frequency.Monthly:
       return interval.value === 1 ? 'month' : 'months';
     default:
       return '';

@@ -1,4 +1,4 @@
-import type { Frequency } from '@/types';
+import { Frequency } from '@/constants';
 import { computed } from 'vue';
 
 interface WeekDay {
@@ -18,15 +18,15 @@ export function useRecurrencePreview(
   weekDays: WeekDay[],
 ) {
   const recurrencePreview = computed(() => {
-    if (recurrence.frequency === 'none') {
+    if (recurrence.frequency === Frequency.None) {
       return 'Does not repeat';
     }
 
-    if (recurrence.frequency === 'daily') {
+    if (recurrence.frequency === Frequency.Daily) {
       return recurrence.interval === 1 ? 'Every day' : `Every ${recurrence.interval} days`;
     }
 
-    if (recurrence.frequency === 'weekly') {
+    if (recurrence.frequency === Frequency.Weekly) {
       const selectedDays = weekDays
         .filter((day) => recurrence.daysOfWeek.includes(day.value))
         .map((day) => day.short)
@@ -37,7 +37,7 @@ export function useRecurrencePreview(
       return selectedDays ? `${base} on ${selectedDays}` : base;
     }
 
-    if (recurrence.frequency === 'monthly') {
+    if (recurrence.frequency === Frequency.Monthly) {
       const base = recurrence.interval === 1 ? 'Every month' : `Every ${recurrence.interval} months`;
 
       return recurrence.dayOfMonth ? `${base} on day ${recurrence.dayOfMonth}` : base;

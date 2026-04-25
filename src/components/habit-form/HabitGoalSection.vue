@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UiInput from '@/components/UiInput.vue';
 import UiLabel from '@/components/UiLabel.vue';
-import type { HabitKind } from '@/types';
+import type { HabitKind } from '@/constants';
 
 defineProps<{
   habitKind: HabitKind;

@@ -1,4 +1,31 @@
-import type { Frequency, HabitColor, HabitKind } from './types';
+export const HabitKind = {
+  Check: 'check',
+  Duration: 'duration',
+  Countable: 'countable',
+} as const;
+
+export type HabitKind = (typeof HabitKind)[keyof typeof HabitKind];
+
+export const Frequency = {
+  None: 'none',
+  Daily: 'daily',
+  Weekly: 'weekly',
+  Monthly: 'monthly',
+} as const;
+
+export type Frequency = (typeof Frequency)[keyof typeof Frequency];
+
+export const HabitColor = {
+  Rose: 'rose',
+  Pink: 'pink',
+  Violet: 'violet',
+  Blue: 'blue',
+  Emerald: 'emerald',
+  Amber: 'amber',
+  Slate: 'slate',
+} as const;
+
+export type HabitColor = (typeof HabitColor)[keyof typeof HabitColor];
 
 export const weekDays = [
   { value: 1, short: 'Mon', label: 'Monday' },
@@ -21,9 +48,9 @@ export const indicatorColors = [
 ] satisfies Array<{ value: HabitColor; label: string; dotClass: string }>;
 
 export const habitKindOptions = [
-  { value: 'check', label: 'Check-based' },
-  { value: 'duration', label: 'Duration-based' },
-  { value: 'countable', label: 'Count-based' },
+  { value: HabitKind.Check, label: 'Check-based' },
+  { value: HabitKind.Duration, label: 'Duration-based' },
+  { value: HabitKind.Countable, label: 'Count-based' },
 ] satisfies Array<{ value: HabitKind; label: string }>;
 
 export const frequencyOptions = [

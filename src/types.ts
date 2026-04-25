@@ -1,21 +1,10 @@
+import type { Frequency, HabitColor, HabitKind } from "./constants";
+
 export interface Habit {
   id: number;
   title: string;
   doneToday: boolean;
 }
-
-export type HabitColor =
-  | 'rose'
-  | 'pink'
-  | 'violet'
-  | 'blue'
-  | 'emerald'
-  | 'amber'
-  | 'slate';
-
-export type HabitKind = 'check' | 'duration' | 'countable';
-
-export type Frequency = 'none' | 'daily' | 'weekly' | 'monthly';
 
 export interface HabitForm {
   title: string;

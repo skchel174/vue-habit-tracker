@@ -3,7 +3,7 @@ import UiInput from '@/components/UiInput.vue';
 import UiLabel from '@/components/UiLabel.vue';
 import UiSelect from '@/components/UiSelect.vue';
 import UiTextarea from '@/components/UiTextarea.vue';
-import type { HabitKind } from '@/types';
+import type { HabitKind } from '@/constants';
 
 defineProps<{
   habitKindOptions: { value: HabitKind; label: string }[];
