@@ -1,14 +1,23 @@
 <script setup lang="ts">
+import UiFormField from '@/components/UiFormField.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
 import UiSelect from '@/components/UiSelect.vue';
-import type { Frequency } from '@/types';
+import { Frequency } from '@/constants';
+import type { FieldError } from '@/types';
 import { computed } from 'vue';
+
+type HabitRecurrenceErrors = {
+  frequency: FieldError;
+  interval: FieldError;
+  daysOfWeek: FieldError;
+  dayOfMonth: FieldError;
+};
 
 defineProps<{
   weekDays: { value: number; short: string; label: string }[];
   frequencyOptions: { value: Frequency; label: string }[];
   recurrencePreview: string;
+  errors: HabitRecurrenceErrors;
 }>();
 
 const frequency = defineModel<Frequency>('frequency', { required: true });
@@ -18,26 +27,27 @@ const dayOfMonth = defineModel<number | null>('dayOfMonth', { default: null });
 
 const frequencyUnitLabel = computed(() => {
   switch (frequency.value) {
-    case 'daily':
+    case Frequency.Daily:
       return interval.value === 1 ? 'day' : 'days';
-    case 'weekly':
+    case Frequency.Weekly:
       return interval.value === 1 ? 'week' : 'weeks';
-    case 'monthly':
+    case Frequency.Monthly:
       return interval.value === 1 ? 'month' : 'months';
     default:
       return '';
   }
 });
 
-const handleToggleWeekDay = (day: number) => {
-  if (selectedDaysOfWeek.value.includes(day)) {
+const handleToggleWeekDay = (day: string | number) => {
+  const dayNumber = Number(day);
+  if (selectedDaysOfWeek.value.includes(dayNumber)) {
     selectedDaysOfWeek.value = selectedDaysOfWeek.value.filter(
-      (item) => item !== day,
+      (item) => item !== dayNumber,
     );
     return;
   }
 
-  selectedDaysOfWeek.value = [...selectedDaysOfWeek.value, day].sort(
+  selectedDaysOfWeek.value = [...selectedDaysOfWeek.value, dayNumber].sort(
     (a, b) => a - b,
   );
 };
@@ -45,61 +55,74 @@ const handleToggleWeekDay = (day: number) => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="frequency">Frequency</UiLabel>
-    <UiSelect id="frequency" v-model="frequency" :options="frequencyOptions" />
+    <UiFormField for="frequency" label="Frequency" :error="errors.frequency">
+      <UiSelect
+        id="frequency"
+        v-model="frequency"
+        :options="frequencyOptions"
+      />
+    </UiFormField>
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="interval">Repeat every</UiLabel>
-
-    <div class="flex gap-2">
-      <UiInput
-        id="interval"
-        v-model="interval"
-        type="number"
-        min="1"
-        max="365"
-      />
-
-      <div
-        class="inline-flex min-w-[72px] items-center justify-center rounded-xl border border-rose-200 bg-rose-50/80 px-3 text-sm font-medium text-slate-600"
-      >
-        {{ frequencyUnitLabel }}
+    <UiFormField for="interval" label="Repeat every" :error="errors.interval">
+      <div class="flex gap-2">
+        <UiInput
+          id="interval"
+          v-model.number="interval"
+          type="number"
+          min="1"
+          max="365"
+        />
+        <div
+          class="inline-flex min-w-[72px] items-center justify-center rounded-xl border border-rose-200 bg-rose-50/80 px-3 text-sm font-medium text-slate-600"
+        >
+          {{ frequencyUnitLabel }}
+        </div>
       </div>
-    </div>
+    </UiFormField>
   </div>
 
   <div v-if="frequency === 'weekly'" class="lg:col-span-12 space-y-1.5">
-    <UiLabel for="daysOfWeek">Days of week</UiLabel>
-
-    <div class="flex flex-wrap gap-2">
-      <button
-        v-for="day in weekDays"
-        :key="day.value"
-        type="button"
-        class="rounded-xl border px-3 py-2 text-sm font-medium transition"
-        :class="
-          selectedDaysOfWeek.includes(day.value)
-            ? 'border-rose-300 bg-rose-100 text-slate-700 shadow-sm'
-            : 'border-rose-200 bg-white text-slate-500 hover:border-rose-300 hover:bg-rose-50'
-        "
-        @click="handleToggleWeekDay(day.value)"
-      >
-        {{ day.short }}
-      </button>
-    </div>
+    <UiFormField
+      for="daysOfWeek"
+      label="Days of week"
+      :error="errors.daysOfWeek"
+    >
+      <div class="flex flex-wrap gap-2">
+        <button
+          v-for="day in weekDays"
+          :key="day.value"
+          type="button"
+          class="rounded-xl border px-3 py-2 text-sm font-medium transition"
+          :class="
+            selectedDaysOfWeek.includes(day.value)
+              ? 'border-rose-300 bg-rose-100 text-slate-700 shadow-sm'
+              : 'border-rose-200 bg-white text-slate-500 hover:border-rose-300 hover:bg-rose-50'
+          "
+          @click="handleToggleWeekDay(day.value)"
+        >
+          {{ day.short }}
+        </button>
+      </div>
+    </UiFormField>
   </div>
 
   <div v-if="frequency === 'monthly'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="dayOfMonth">Day of month</UiLabel>
-    <UiInput
-      id="dayOfMonth"
-      v-model="dayOfMonth"
-      type="number"
-      min="1"
-      max="31"
-      placeholder="For example 15"
-    />
+    <UiFormField
+      for="dayOfMonth"
+      label="Day of month"
+      :error="errors.dayOfMonth"
+    >
+      <UiInput
+        id="dayOfMonth"
+        v-model.number="dayOfMonth"
+        type="number"
+        min="1"
+        max="31"
+        placeholder="For example 15"
+      />
+    </UiFormField>
   </div>
 
   <div v-if="frequency !== 'none'" class="lg:col-span-12 space-y-1.5">

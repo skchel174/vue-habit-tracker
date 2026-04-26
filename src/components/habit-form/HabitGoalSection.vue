@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import UiFormField from '@/components/UiFormField.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
-import type { HabitKind } from '@/types';
+import type { HabitKind } from '@/constants';
+import type { FieldError } from '@/types';
+
+type HabitGoalErrors = {
+  targetCount: FieldError;
+  targetMinutes: FieldError;
+};
 
 defineProps<{
   habitKind: HabitKind;
+  errors: HabitGoalErrors;
 }>();
 
 const targetCount = defineModel<number | null>('targetCount', {
@@ -18,24 +25,34 @@ const targetMinutes = defineModel<number | null>('targetMinutes', {
 
 <template>
   <div v-if="habitKind === 'countable'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="targetCount">Target count</UiLabel>
-    <UiInput
-      id="targetCount"
-      v-model="targetCount"
-      type="number"
-      min="1"
-      placeholder="For example 7"
-    />
+    <UiFormField
+      for="targetCount"
+      label="Target count"
+      :error="errors.targetCount"
+    >
+      <UiInput
+        id="targetCount"
+        v-model="targetCount"
+        type="number"
+        min="1"
+        placeholder="For example 7"
+      />
+    </UiFormField>
   </div>
 
   <div v-if="habitKind === 'duration'" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="targetMinutes">Duration in minutes</UiLabel>
-    <UiInput
-      id="targetMinutes"
-      v-model="targetMinutes"
-      type="number"
-      min="1"
-      placeholder="For example 30"
-    />
+    <UiFormField
+      for="targetMinutes"
+      label="Duration in minutes"
+      :error="errors.targetMinutes"
+    >
+      <UiInput
+        id="targetMinutes"
+        v-model="targetMinutes"
+        type="number"
+        min="1"
+        placeholder="For example 30"
+      />
+    </UiFormField>
   </div>
 </template>

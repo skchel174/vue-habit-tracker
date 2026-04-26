@@ -1,10 +1,19 @@
 <script setup lang="ts">
+import UiFormField from '@/components/UiFormField.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
+import type { FieldError } from '@/types';
 import { computed } from 'vue';
+
+type HabitScheduleErrors = {
+  startDate: FieldError;
+  endDate: FieldError;
+  repeatLimit: FieldError;
+  preferredTime: FieldError;
+};
 
 const props = defineProps<{
   isRecurring: boolean;
+  errors: HabitScheduleErrors;
 }>();
 
 const startDate = defineModel<string | null>('startDate', { default: null });
@@ -21,28 +30,44 @@ const startDateLabel = computed(() => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="startDate">{{ startDateLabel }}</UiLabel>
-    <UiInput id="startDate" v-model="startDate" type="date" />
+    <UiFormField
+      for="startDate"
+      :label="startDateLabel"
+      :error="errors.startDate"
+    >
+      <UiInput id="startDate" v-model="startDate" type="date" />
+    </UiFormField>
   </div>
 
   <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="endDate">End date</UiLabel>
-    <UiInput id="endDate" v-model="endDate" type="date" />
+    <UiFormField for="endDate" label="End date" :error="errors.endDate">
+      <UiInput id="endDate" v-model="endDate" type="date" />
+    </UiFormField>
   </div>
 
   <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="repeatLimit">Repeat limit</UiLabel>
-    <UiInput
-      id="repeatLimit"
-      v-model="repeatLimit"
-      type="number"
-      min="1"
-      placeholder="e.g. 10 times"
-    />
+    <UiFormField
+      for="repeatLimit"
+      label="Repeat limit"
+      :error="errors.repeatLimit"
+    >
+      <UiInput
+        id="repeatLimit"
+        v-model.number="repeatLimit"
+        type="number"
+        min="1"
+        placeholder="e.g. 10 times"
+      />
+    </UiFormField>
   </div>
 
   <div class="lg:col-span-6 space-y-1.5">
-    <UiLabel for="preferredTime">Preferred time</UiLabel>
-    <UiInput id="preferredTime" v-model="preferredTime" type="time" />
+    <UiFormField
+      for="preferredTime"
+      label="Preferred time"
+      :error="errors.preferredTime"
+    >
+      <UiInput id="preferredTime" v-model="preferredTime" type="time" />
+    </UiFormField>
   </div>
 </template>

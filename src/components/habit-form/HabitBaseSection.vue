@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import UiFormField from '@/components/UiFormField.vue';
 import UiInput from '@/components/UiInput.vue';
-import UiLabel from '@/components/UiLabel.vue';
 import UiSelect from '@/components/UiSelect.vue';
 import UiTextarea from '@/components/UiTextarea.vue';
-import type { HabitKind } from '@/types';
+import type { HabitKind } from '@/constants';
+import type { FieldError } from '@/types';
+
+type HabitBaseErrors = {
+  title: FieldError;
+  description: FieldError;
+  habitKind: FieldError;
+};
 
 defineProps<{
-  habitKindOptions: { value: HabitKind; label: string }[];
+  habitKindOptions: Array<{ value: HabitKind; label: string }>;
+  errors: HabitBaseErrors;
 }>();
 
 const title = defineModel<string>('title', { required: true });
@@ -16,26 +24,29 @@ const habitKind = defineModel<HabitKind>('habitKind', { required: true });
 
 <template>
   <div class="lg:col-span-12 space-y-1.5">
-    <UiLabel for="title">Title</UiLabel>
-    <UiInput
-      id="title"
-      type="text"
-      v-model="title"
-      placeholder="Read, stretch, drink water..."
-    />
+    <UiFormField for="title" label="Title" :error="errors.title">
+      <UiInput
+        id="title"
+        type="text"
+        v-model="title"
+        placeholder="Read, stretch, drink water..."
+      />
+    </UiFormField>
   </div>
 
   <div class="lg:col-span-12 space-y-1.5">
-    <UiLabel for="description">Description</UiLabel>
+    <UiFormField for="description" label="Description" :error="errors.description">
     <UiTextarea
       id="description"
-      v-model="description"
-      placeholder="Optional notes, motivation, or rules..."
-    />
+        v-model="description"
+        placeholder="Optional notes, motivation, or rules..."
+      />
+    </UiFormField>
   </div>
-  
+
   <div class="lg:col-span-4 space-y-1.5">
-    <UiLabel for="habitKind">Habit type</UiLabel>
-    <UiSelect id="habitKind" v-model="habitKind" :options="habitKindOptions" />
+    <UiFormField for="habitKind" label="Habit type" :error="errors.habitKind">
+      <UiSelect id="habitKind" v-model="habitKind" :options="habitKindOptions" />
+    </UiFormField>
   </div>
 </template>

@@ -11,17 +11,29 @@ import UiButton from '@/components/UiButton.vue';
 import { useHabitForm } from '@/composables/useHabitForm';
 import { useRecurrencePreview } from '@/composables/useRecurrencePreview';
 import {
+  Frequency,
+  HabitKind,
   frequencyOptions,
   habitKindOptions,
   indicatorColors,
   weekDays,
 } from '@/constants';
+import { nextTick } from 'vue';
 
-const { form } = useHabitForm();
+const { form, errors, validate, reset } = useHabitForm();
 
 const { recurrencePreview } = useRecurrencePreview(form, weekDays);
 
-const submitForm = () => {
+const submitForm = async () => {
+  const isValid = validate();
+
+  if (!isValid) {
+    await nextTick();
+    const firstErrorElement = document.querySelector('[data-error="true"]');
+    firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  
   console.log('submit', form);
 };
 </script>
@@ -40,6 +52,11 @@ const submitForm = () => {
       v-model:title="form.title"
       v-model:description="form.description"
       v-model:habitKind="form.habitKind"
+      :errors="{
+        title: errors.title,
+        description: errors.description,
+        habitKind: errors.habitKind,
+      }"
     />
 
     <HabitRecurrenceSection
@@ -50,21 +67,37 @@ const submitForm = () => {
       v-model:interval="form.interval"
       v-model:daysOfWeek="form.daysOfWeek"
       v-model:dayOfMonth="form.dayOfMonth"
+      :errors="{
+        frequency: errors.frequency,
+        interval: errors.interval,
+        daysOfWeek: errors.daysOfWeek,
+        dayOfMonth: errors.dayOfMonth,
+      }"
     />
 
     <HabitGoalSection
-      v-if="form.habitKind !== 'check'"
+      v-if="form.habitKind !== HabitKind.Check"
       :habitKind="form.habitKind"
       v-model:targetCount="form.targetCount"
       v-model:targetMinutes="form.targetMinutes"
+      :errors="{
+        targetCount: errors.targetCount,
+        targetMinutes: errors.targetMinutes,
+      }"
     />
 
     <HabitScheduleSection
-      :isRecurring="form.frequency !== 'none'"
+      :isRecurring="form.frequency !== Frequency.None"
       v-model:startDate="form.startDate"
       v-model:endDate="form.endDate"
       v-model:repeatLimit="form.repeatLimit"
       v-model:preferredTime="form.preferredTime"
+      :errors="{
+        startDate: errors.startDate,
+        endDate: errors.endDate,
+        repeatLimit: errors.repeatLimit,
+        preferredTime: errors.preferredTime,
+      }"
     />
 
     <HabitAppearanceSection
@@ -75,7 +108,7 @@ const submitForm = () => {
     <HabitStatusSection v-model:isArchived="form.isArchived" />
 
     <template #actions>
-      <UiButton variant="secondary">Cancel</UiButton>
+      <UiButton variant="secondary" @click="reset">Cancel</UiButton>
       <UiButton type="submit">Save habit</UiButton>
     </template>
   </HabitFormLayout>
