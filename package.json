@@ -6,8 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "vue-tsc --noEmit",
+    "check": "vue-tsc --noEmit && eslint ."
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
@@ -16,13 +20,20 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^25.5.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "autoprefixer": "^10.4.27",
+    "eslint": "^10.2.1",
+    "eslint-plugin-vue": "^10.9.0",
+    "globals": "^17.5.0",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.1"
+    "typescript-eslint": "^8.59.0",
+    "vite": "^8.0.1",
+    "vue-eslint-parser": "^10.4.0",
+    "vue-tsc": "^3.2.7"
   }
 }
