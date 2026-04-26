@@ -1,3 +1,11 @@
+export const AlertType = {
+  Error: 'error',
+  Info: 'info',
+  Success: 'success',
+} as const;
+
+export type AlertType = (typeof AlertType)[keyof typeof AlertType];
+
 export const HabitKind = {
   Check: 'check',
   Duration: 'duration',
