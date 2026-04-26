@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import AppAlertStack from '@/components/app-alert/AppAlertStack.vue';
 import HabitFormContainer from '@/components/habit-form/HabitFormContainer.vue';
 import HabitItem from '@/components/HabitItem.vue';
-import type { Habit } from '@/types';
+import { useAppAlert } from '@/composables/useAppAlert';
+import { AlertType } from '@/constants';
+import type { Habit, HabitForm } from '@/types';
 import { computed, ref, watch } from 'vue';
+
+const { alerts, showAlert, closeAlert } = useAppAlert();
 
 const defaultHabit = [
   { id: 1, title: 'Drink water', doneToday: false },
@@ -38,13 +43,14 @@ const statusText = computed(() => {
   return `Today completed: ${progressText.value}`;
 });
 
-// const addHabit = (data: { title: string }) => {
-//   habits.value.push({
-//     id: Date.now(),
-//     title: data.title,
-//     doneToday: false,
-//   });
-// };
+const addHabit = (data: HabitForm) => {
+  console.log(data);
+  showAlert({
+    type: AlertType.Success,
+    title: 'Habit created',
+    message: 'Habit created successfully',
+  });
+};
 
 const toggleHabit = (id: number) => {
   const habit = habits.value.find((habit) => habit.id === id);
@@ -68,17 +74,22 @@ watch(
 </script>
 
 <template>
+  <Teleport to="body">
+    <AppAlertStack
+      :alerts="alerts"
+      @close="closeAlert"
+    />
+  </Teleport>
+
   <div class="flex flex-col min-h-screen">
     <header class="border-b-[1.5px] border-gray-200">
       <div class="container mx-auto px-4 sm:px-6 py-4">
-        <h1 class="text-3xl text-gray-700 font-bold">
-          Routine
-        </h1>
+        <h1 class="text-3xl text-gray-700 font-bold">Routine</h1>
       </div>
     </header>
 
     <main class="container mx-auto px-2 sm:px-6 py-4">
-      <HabitFormContainer />
+      <HabitFormContainer @submit="addHabit" />
 
       <div class="py-4">
         <p class="text-base font-semibold text-gray-700">
