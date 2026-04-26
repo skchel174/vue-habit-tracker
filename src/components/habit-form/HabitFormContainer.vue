@@ -48,10 +48,10 @@ const submitForm = async () => {
     </template>
 
     <HabitBaseSection
-      :habitKindOptions="habitKindOptions"
       v-model:title="form.title"
       v-model:description="form.description"
-      v-model:habitKind="form.habitKind"
+      v-model:habit-kind="form.habitKind"
+      :habit-kind-options="habitKindOptions"
       :errors="{
         title: errors.title,
         description: errors.description,
@@ -60,13 +60,13 @@ const submitForm = async () => {
     />
 
     <HabitRecurrenceSection
-      :weekDays="weekDays"
-      :frequencyOptions="frequencyOptions"
-      :recurrencePreview="recurrencePreview"
       v-model:frequency="form.frequency"
       v-model:interval="form.interval"
-      v-model:daysOfWeek="form.daysOfWeek"
-      v-model:dayOfMonth="form.dayOfMonth"
+      v-model:days-of-week="form.daysOfWeek"
+      v-model:day-of-month="form.dayOfMonth"
+      :week-days="weekDays"
+      :frequency-options="frequencyOptions"
+      :recurrence-preview="recurrencePreview"
       :errors="{
         frequency: errors.frequency,
         interval: errors.interval,
@@ -77,9 +77,9 @@ const submitForm = async () => {
 
     <HabitGoalSection
       v-if="form.habitKind !== HabitKind.Check"
-      :habitKind="form.habitKind"
-      v-model:targetCount="form.targetCount"
-      v-model:targetMinutes="form.targetMinutes"
+      v-model:target-count="form.targetCount"
+      v-model:target-minutes="form.targetMinutes"
+      :habit-kind="form.habitKind"
       :errors="{
         targetCount: errors.targetCount,
         targetMinutes: errors.targetMinutes,
@@ -87,11 +87,11 @@ const submitForm = async () => {
     />
 
     <HabitScheduleSection
-      :isRecurring="form.frequency !== Frequency.None"
-      v-model:startDate="form.startDate"
-      v-model:endDate="form.endDate"
-      v-model:repeatLimit="form.repeatLimit"
-      v-model:preferredTime="form.preferredTime"
+      v-model:start-date="form.startDate"
+      v-model:end-date="form.endDate"
+      v-model:repeat-limit="form.repeatLimit"
+      v-model:preferred-time="form.preferredTime"
+      :is-recurring="form.frequency !== Frequency.None"
       :errors="{
         startDate: errors.startDate,
         endDate: errors.endDate,
@@ -101,15 +101,22 @@ const submitForm = async () => {
     />
 
     <HabitAppearanceSection
-      :indicatorColors="indicatorColors"
-      v-model:indicatorColor="form.indicatorColor"
+      v-model:indicator-color="form.indicatorColor"
+      :indicator-colors="indicatorColors"
     />
 
-    <HabitStatusSection v-model:isArchived="form.isArchived" />
+    <HabitStatusSection v-model:is-archived="form.isArchived" />
 
     <template #actions>
-      <UiButton variant="secondary" @click="reset">Cancel</UiButton>
-      <UiButton type="submit">Save habit</UiButton>
+      <UiButton
+        variant="secondary"
+        @click="reset"
+      >
+        Cancel
+      </UiButton>
+      <UiButton type="submit">
+        Save habit
+      </UiButton>
     </template>
   </HabitFormLayout>
 </template>

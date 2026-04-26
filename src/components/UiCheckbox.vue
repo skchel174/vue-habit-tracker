@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   modelValue: boolean;
 }>();
 
@@ -17,7 +17,7 @@ const handleInput = (event: Event) => {
   <input
     type="checkbox"
     :value="modelValue"
-    @input="handleInput"
     class="mt-0.5 h-4 w-4 rounded border-rose-300 text-rose-500 focus:ring-rose-200"
-  />
+    @input="handleInput"
+  >
 </template>

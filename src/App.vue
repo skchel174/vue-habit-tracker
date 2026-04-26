@@ -38,13 +38,13 @@ const statusText = computed(() => {
   return `Today completed: ${progressText.value}`;
 });
 
-const addHabit = (data: { title: string }) => {
-  habits.value.push({
-    id: Date.now(),
-    title: data.title,
-    doneToday: false,
-  });
-};
+// const addHabit = (data: { title: string }) => {
+//   habits.value.push({
+//     id: Date.now(),
+//     title: data.title,
+//     doneToday: false,
+//   });
+// };
 
 const toggleHabit = (id: number) => {
   const habit = habits.value.find((habit) => habit.id === id);
@@ -71,7 +71,9 @@ watch(
   <div class="flex flex-col min-h-screen">
     <header class="border-b-[1.5px] border-gray-200">
       <div class="container mx-auto px-4 sm:px-6 py-4">
-        <h1 class="text-3xl text-gray-700 font-bold">Routine</h1>
+        <h1 class="text-3xl text-gray-700 font-bold">
+          Routine
+        </h1>
       </div>
     </header>
 
@@ -79,7 +81,9 @@ watch(
       <HabitFormContainer />
 
       <div class="py-4">
-        <p class="text-base font-semibold text-gray-700">{{ statusText }}</p>
+        <p class="text-base font-semibold text-gray-700">
+          {{ statusText }}
+        </p>
       </div>
 
       <div class="flex flex-col gap-1">

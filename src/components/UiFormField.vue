@@ -4,7 +4,7 @@ import UiFieldLabel from './UiFieldLabel.vue';
 import UiFieldMessage from './UiFieldMessage.vue';
 
 defineProps<{
-  for: string;
+  forId?: string;
   label?: string;
   error?: FieldError;
   required?: boolean;
@@ -12,9 +12,16 @@ defineProps<{
 </script>
 
 <template>
-  <div :data-error="!!error" class="space-y-1.5">
+  <div
+    :data-error="!!error"
+    class="space-y-1.5"
+  >
     <slot name="label">
-      <UiFieldLabel v-if="label" :for="for" :required="required">
+      <UiFieldLabel
+        v-if="label"
+        :for-id="forId"
+        :required="required"
+      >
         {{ label }}
       </UiFieldLabel>
     </slot>
@@ -22,7 +29,10 @@ defineProps<{
     <slot />
 
     <slot name="message">
-      <UiFieldMessage :message="error" variant="error" />
+      <UiFieldMessage
+        :message="error"
+        variant="error"
+      />
     </slot>
   </div>
 </template>

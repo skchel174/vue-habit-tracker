@@ -31,23 +31,41 @@ const startDateLabel = computed(() => {
 <template>
   <div class="lg:col-span-4 space-y-1.5">
     <UiFormField
-      for="startDate"
+      for-id="startDate"
       :label="startDateLabel"
       :error="errors.startDate"
     >
-      <UiInput id="startDate" v-model="startDate" type="date" />
+      <UiInput
+        id="startDate"
+        v-model="startDate"
+        type="date"
+      />
     </UiFormField>
   </div>
 
-  <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
-    <UiFormField for="endDate" label="End date" :error="errors.endDate">
-      <UiInput id="endDate" v-model="endDate" type="date" />
-    </UiFormField>
-  </div>
-
-  <div v-if="isRecurring" class="lg:col-span-4 space-y-1.5">
+  <div
+    v-if="isRecurring"
+    class="lg:col-span-4 space-y-1.5"
+  >
     <UiFormField
-      for="repeatLimit"
+      for-id="endDate"
+      label="End date"
+      :error="errors.endDate"
+    >
+      <UiInput
+        id="endDate"
+        v-model="endDate"
+        type="date"
+      />
+    </UiFormField>
+  </div>
+
+  <div
+    v-if="isRecurring"
+    class="lg:col-span-4 space-y-1.5"
+  >
+    <UiFormField
+      for-id="repeatLimit"
       label="Repeat limit"
       :error="errors.repeatLimit"
     >
@@ -63,11 +81,15 @@ const startDateLabel = computed(() => {
 
   <div class="lg:col-span-6 space-y-1.5">
     <UiFormField
-      for="preferredTime"
+      for-id="preferredTime"
       label="Preferred time"
       :error="errors.preferredTime"
     >
-      <UiInput id="preferredTime" v-model="preferredTime" type="time" />
+      <UiInput
+        id="preferredTime"
+        v-model="preferredTime"
+        type="time"
+      />
     </UiFormField>
   </div>
 </template>
