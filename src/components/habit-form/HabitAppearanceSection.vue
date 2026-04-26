@@ -17,7 +17,10 @@ const changeIndicatorColor = (color: HabitColor) => {
 
 <template>
   <div class="lg:col-span-6 space-y-1.5">
-    <UiFormField for="indicatorColor" label="Indicator color">
+    <UiFormField
+      for-id="indicatorColor"
+      label="Indicator color"
+    >
       <div class="flex flex-wrap gap-2">
         <button
           v-for="color in indicatorColors"
@@ -31,7 +34,10 @@ const changeIndicatorColor = (color: HabitColor) => {
           "
           @click="changeIndicatorColor(color.value)"
         >
-          <span class="h-2.5 w-2.5 rounded-full" :class="color.dotClass" />
+          <span
+            class="h-2.5 w-2.5 rounded-full"
+            :class="color.dotClass"
+          />
           {{ color.label }}
         </button>
       </div>

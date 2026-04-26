@@ -2,7 +2,7 @@
 import type { Habit } from '@/types';
 import { usePopover } from '@/composables/usePopover';
 
-const props = defineProps<{ habit: Habit }>();
+defineProps<{ habit: Habit }>();
 
 const emit = defineEmits<{
   (e: 'toggle', id: number): void;

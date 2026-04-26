@@ -55,7 +55,11 @@ const handleToggleWeekDay = (day: string | number) => {
 
 <template>
   <div class="lg:col-span-4 space-y-1.5">
-    <UiFormField for="frequency" label="Frequency" :error="errors.frequency">
+    <UiFormField
+      for-id="frequency"
+      label="Frequency"
+      :error="errors.frequency"
+    >
       <UiSelect
         id="frequency"
         v-model="frequency"
@@ -64,8 +68,15 @@ const handleToggleWeekDay = (day: string | number) => {
     </UiFormField>
   </div>
 
-  <div v-if="frequency !== 'none'" class="lg:col-span-4 space-y-1.5">
-    <UiFormField for="interval" label="Repeat every" :error="errors.interval">
+  <div
+    v-if="frequency !== 'none'"
+    class="lg:col-span-4 space-y-1.5"
+  >
+    <UiFormField
+      for-id="interval"
+      label="Repeat every"
+      :error="errors.interval"
+    >
       <div class="flex gap-2">
         <UiInput
           id="interval"
@@ -83,9 +94,12 @@ const handleToggleWeekDay = (day: string | number) => {
     </UiFormField>
   </div>
 
-  <div v-if="frequency === 'weekly'" class="lg:col-span-12 space-y-1.5">
+  <div
+    v-if="frequency === 'weekly'"
+    class="lg:col-span-12 space-y-1.5"
+  >
     <UiFormField
-      for="daysOfWeek"
+      for-id="daysOfWeek"
       label="Days of week"
       :error="errors.daysOfWeek"
     >
@@ -108,9 +122,12 @@ const handleToggleWeekDay = (day: string | number) => {
     </UiFormField>
   </div>
 
-  <div v-if="frequency === 'monthly'" class="lg:col-span-4 space-y-1.5">
+  <div
+    v-if="frequency === 'monthly'"
+    class="lg:col-span-4 space-y-1.5"
+  >
     <UiFormField
-      for="dayOfMonth"
+      for-id="dayOfMonth"
       label="Day of month"
       :error="errors.dayOfMonth"
     >
@@ -125,7 +142,10 @@ const handleToggleWeekDay = (day: string | number) => {
     </UiFormField>
   </div>
 
-  <div v-if="frequency !== 'none'" class="lg:col-span-12 space-y-1.5">
+  <div
+    v-if="frequency !== 'none'"
+    class="lg:col-span-12 space-y-1.5"
+  >
     <div class="rounded-2xl border border-rose-200 bg-rose-50/60 px-4 py-3">
       <p class="text-sm font-medium text-slate-700">
         {{ recurrencePreview }}

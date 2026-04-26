@@ -24,20 +24,28 @@ const habitKind = defineModel<HabitKind>('habitKind', { required: true });
 
 <template>
   <div class="lg:col-span-12 space-y-1.5">
-    <UiFormField for="title" label="Title" :error="errors.title">
+    <UiFormField
+      for-id="title"
+      label="Title"
+      :error="errors.title"
+    >
       <UiInput
         id="title"
-        type="text"
         v-model="title"
+        type="text"
         placeholder="Read, stretch, drink water..."
       />
     </UiFormField>
   </div>
 
   <div class="lg:col-span-12 space-y-1.5">
-    <UiFormField for="description" label="Description" :error="errors.description">
-    <UiTextarea
-      id="description"
+    <UiFormField
+      for-id="description"
+      label="Description"
+      :error="errors.description"
+    >
+      <UiTextarea
+        id="description"
         v-model="description"
         placeholder="Optional notes, motivation, or rules..."
       />
@@ -45,8 +53,16 @@ const habitKind = defineModel<HabitKind>('habitKind', { required: true });
   </div>
 
   <div class="lg:col-span-4 space-y-1.5">
-    <UiFormField for="habitKind" label="Habit type" :error="errors.habitKind">
-      <UiSelect id="habitKind" v-model="habitKind" :options="habitKindOptions" />
+    <UiFormField
+      for-id="habitKind"
+      label="Habit type"
+      :error="errors.habitKind"
+    >
+      <UiSelect
+        id="habitKind"
+        v-model="habitKind"
+        :options="habitKindOptions"
+      />
     </UiFormField>
   </div>
 </template>

@@ -24,9 +24,12 @@ const targetMinutes = defineModel<number | null>('targetMinutes', {
 </script>
 
 <template>
-  <div v-if="habitKind === 'countable'" class="lg:col-span-4 space-y-1.5">
+  <div
+    v-if="habitKind === 'countable'"
+    class="lg:col-span-4 space-y-1.5"
+  >
     <UiFormField
-      for="targetCount"
+      for-id="targetCount"
       label="Target count"
       :error="errors.targetCount"
     >
@@ -40,9 +43,12 @@ const targetMinutes = defineModel<number | null>('targetMinutes', {
     </UiFormField>
   </div>
 
-  <div v-if="habitKind === 'duration'" class="lg:col-span-4 space-y-1.5">
+  <div
+    v-if="habitKind === 'duration'"
+    class="lg:col-span-4 space-y-1.5"
+  >
     <UiFormField
-      for="targetMinutes"
+      for-id="targetMinutes"
       label="Duration in minutes"
       :error="errors.targetMinutes"
     >
