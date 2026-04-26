@@ -29,6 +29,7 @@ export default [
     },
     rules: {
       'vue/multi-word-component-names': 'off',
+      'vue/singleline-html-element-content-newline': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

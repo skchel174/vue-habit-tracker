@@ -8,9 +8,11 @@ import HabitRecurrenceSection from '@/components/habit-form/HabitRecurrenceSecti
 import HabitScheduleSection from '@/components/habit-form/HabitScheduleSection.vue';
 import HabitStatusSection from '@/components/habit-form/HabitStatusSection.vue';
 import UiButton from '@/components/UiButton.vue';
+import { useAppAlert } from '@/composables/useAppAlert';
 import { useHabitForm } from '@/composables/useHabitForm';
 import { useRecurrencePreview } from '@/composables/useRecurrencePreview';
 import {
+  AlertType,
   Frequency,
   HabitKind,
   frequencyOptions,
@@ -18,28 +20,39 @@ import {
   indicatorColors,
   weekDays,
 } from '@/constants';
+import type { HabitForm } from '@/types';
 import { nextTick } from 'vue';
 
 const { form, errors, validate, reset } = useHabitForm();
 
 const { recurrencePreview } = useRecurrencePreview(form, weekDays);
 
-const submitForm = async () => {
-  const isValid = validate();
+const emit = defineEmits<{
+  (e: 'submit', form: HabitForm): void;
+}>();
 
+const { showAlert } = useAppAlert();
+
+const handleSubmit = async () => {
+  const isValid = validate();
   if (!isValid) {
     await nextTick();
     const firstErrorElement = document.querySelector('[data-error="true"]');
     firstErrorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    showAlert({
+      type: AlertType.Error,
+      message: 'Habit form contains errors',
+    });
+
     return;
   }
-  
-  console.log('submit', form);
+  emit('submit', form);
 };
 </script>
 
 <template>
-  <HabitFormLayout @submit="submitForm">
+  <HabitFormLayout @submit="handleSubmit">
     <template #header>
       <HabitFormHeader
         title="Create habit"
@@ -114,9 +127,7 @@ const submitForm = async () => {
       >
         Cancel
       </UiButton>
-      <UiButton type="submit">
-        Save habit
-      </UiButton>
+      <UiButton type="submit"> Save habit </UiButton>
     </template>
   </HabitFormLayout>
 </template>

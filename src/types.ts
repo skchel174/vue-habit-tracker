@@ -1,4 +1,11 @@
-import type { Frequency, HabitColor, HabitKind } from "./constants";
+import type { AlertType, Frequency, HabitColor, HabitKind } from '@/constants';
+
+export interface AppAlertItem {
+  id: string;
+  type?: AlertType | undefined;
+  title?: string | undefined;
+  message: string;
+}
 
 export type FieldError = string | null | undefined;
 
