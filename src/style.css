@@ -5,6 +5,54 @@
 @import '@fontsource/inter/600.css';
 @import '@fontsource/inter/700.css';
 
+@theme {
+  /* colors */
+  --color-background: #fcfafb;
+  --color-surface: #ffffff;
+  --color-surface-muted: #fff7f9;
+  --color-surface-soft: #fdf2f5;
+  --color-border: #f5dce5;
+  --color-border-soft: #f8e8ee;
+  --color-border-strong: #f3c7d5;
+  --color-text-primary: #131d36;
+  --color-text-secondary: #565c6d;
+  --color-text-muted: #9ba0ac;
+  --color-text-soft: #b3b8c6;
+  --color-brand-50: #fff1f5;
+  --color-brand-100: #ffe4ec;
+  --color-brand-200: #f9b0c5;
+  --color-brand-300: #fa9db6;
+  --color-brand-400: #fa668d;
+  --color-brand-500: #f14a77;
+  --color-brand-600: #fa3268;
+  --color-habit-blue: #689de8;
+  --color-habit-cyan: #38b5f2;
+  --color-habit-green: #24b78f;
+  --color-habit-purple: #a177ec;
+  --color-habit-orange: #f9b322;
+  --color-habit-slate: #788793;
+
+  /* shadows */
+  --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.04); /* input, badge, pills, progress */
+  --shadow-interactive: 0 4px 14px rgba(250, 50, 104, 0.14); /* buttons, active & selectable elements*/
+  --shadow-layout:
+    0 2px 8px rgba(15, 23, 42, 0.03), 0 12px 32px rgba(250, 50, 104, 0.05); /* sections, panels */
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  background-color: #f5f5f7;
+  color: #334155; /* slate-700 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 html,
 body,
 #app {
